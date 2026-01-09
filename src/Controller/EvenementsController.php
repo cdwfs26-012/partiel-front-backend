@@ -92,4 +92,32 @@ final class EvenementsController extends AbstractController
         ]);
     }
 
+    #[Route('/evenements/avis/modifier/{id}', name: 'app_avis_edit')]
+    public function editAvis(Avis $avis, Request $request, EntityManagerInterface $em): Response
+    {
+        // Sécurité : Seul l'auteur de l'avis peut le modifier
+        if ($avis->getAuteur() !== $this->getUser()) {
+            $this->addFlash('danger', 'Vous n\'êtes pas autorisé à modifier cet avis.');
+            return $this->redirectToRoute('app_profile');
+        }
+
+        $form = $this->createForm(AvisType::class, $avis);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Règle d'or : Toute modification entraîne une nouvelle modération
+            $avis->setAccept(0);
+
+            $em->flush();
+
+            $this->addFlash('success', 'Votre avis a été mis à jour et sera de nouveau modéré.');
+            return $this->redirectToRoute('app_profile');
+        }
+
+        return $this->render('avis/edit.html.twig', [
+            'form' => $form->createView(),
+            'event' => $avis->getEvenement(),
+        ]);
+    }
+
 }

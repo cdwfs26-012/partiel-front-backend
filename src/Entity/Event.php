@@ -114,6 +114,7 @@ class Event
     {
         if (!$this->participants->contains($participant)) {
             $this->participants->add($participant);
+            $participant->addParticipation($this);
         }
 
         return $this;
@@ -121,7 +122,9 @@ class Event
 
     public function removeParticipant(User $participant): static
     {
-        $this->participants->removeElement($participant);
+        if ($this->participants->removeElement($participant)) {
+            $participant->removeParticipation($this);
+        }
 
         return $this;
     }

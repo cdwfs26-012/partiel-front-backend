@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Espace - Relais & Châteaux{% endblock %}
+
+{% block body %}
+    <div class="bg-[#fdfcf9] min-h-screen py-16">
+        <div class="container mx-auto px-6 max-w-5xl">
+
+            {# En-tête Profil #}
+            <div class="mb-16 border-b border-stone-200 pb-8">
+                <span class="text-stone-400 uppercase tracking-[0.3em] text-xs mb-2 block">Espace Membre</span>
+                <h1 class="text-4xl font-serif text-stone-900">{{ app.user.email }}</h1>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+
+                {# Section Participations #}
+                <div class="lg:col-span-1">
+                    <h2 class="text-xs uppercase tracking-widest text-stone-400 mb-8 pb-2 border-b border-stone-100">Mes Participations</h2>
+                    {% if participations is empty %}
+                        <p class="text-stone-400 italic text-sm font-light">Aucune participation prévue.</p>
+                    {% else %}
+                        <div class="space-y-6">
+                            {% for event in participations %}
+                                <div class="group">
+                                    <a href="{{ path('app_evenements_detail', {id: event.id}) }}" class="block">
+                                        <h3 class="text-stone-800 font-serif group-hover:text-stone-500 transition-colors">{{ event.name }}</h3>
+                                        <p class="text-[10px] text-stone-400 uppercase tracking-tighter mt-1">Voir l'événement →</p>
+                                    </a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                {# Section Avis #}
+                <div class="lg:col-span-2">
+                    <h2 class="text-xs uppercase tracking-widest text-stone-400 mb-8 pb-2 border-b border-stone-100">Mes Avis & Témoignages</h2>
+
+                    {% if avis is empty %}
+                        <p class="text-stone-400 italic text-sm font-light">Vous n'avez pas encore partagé d'expérience.</p>
+                    {% else %}
+                        <div class="space-y-10">
+                            {% for a in avis %}
+                                <div class="bg-white p-6 border border-stone-100 shadow-sm">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <p class="text-[10px] uppercase text-stone-400 tracking-widest mb-1">{{ a.evenement.name }}</p>
+                                            <div class="flex items-center space-x-1">
+                                                {% for i in 1..5 %}
+                                                    <div class="w-1.5 h-1.5 rounded-full {{ i <= a.note ? 'bg-stone-800' : 'bg-stone-200' }}"></div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                        {# Badge de statut de modération #}
+                                        {% if a.accept %}
+                                            <span class="text-[9px] bg-green-50 text-green-600 px-2 py-1 uppercase tracking-tighter">Publié</span>
+                                        {% else %}
+                                            <span class="text-[9px] bg-amber-50 text-amber-600 px-2 py-1 uppercase tracking-tighter italic">En modération</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <blockquote class="text-stone-600 font-serif italic mb-6">
+                                        "{{ a.commentaire|length > 100 ? a.commentaire|slice(0, 100) ~ '...' : a.commentaire }}"
+                                    </blockquote>
+
+                                    <div class="flex justify-end">
+                                        <a href="{{ path('app_avis_edit', {id: a.id}) }}" class="text-[10px] uppercase tracking-widest text-stone-800 border-b border-stone-800 pb-0.5 hover:text-stone-400 hover:border-stone-400 transition-all">
+                                            Modifier mon avis
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

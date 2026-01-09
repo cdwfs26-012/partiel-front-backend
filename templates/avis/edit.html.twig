@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon avis - {{ event.name }}{% endblock %}
+
+{% block body %}
+    <div class="min-h-[80vh] flex items-center justify-center py-20 px-4 bg-[#fdfcf9]">
+        <div class="max-w-xl w-full">
+
+            <div class="text-center mb-12">
+                <span class="text-stone-400 uppercase tracking-[0.3em] text-xs mb-4 block italic">Modification</span>
+                <h1 class="text-3xl font-light text-stone-800 font-serif mb-4">Avis sur {{ event.name }}</h1>
+                <div class="w-12 h-px bg-stone-300 mx-auto"></div>
+            </div>
+
+            <div class="bg-white border border-stone-100 p-10 shadow-sm">
+                {{ form_start(form, {'attr': {'class': 'space-y-8'}}) }}
+
+                <div>
+                    <label class="text-[10px] uppercase tracking-widest text-stone-400 mb-3 block">Note d'excellence</label>
+                    {{ form_widget(form.note, {'attr': {'class': 'w-full bg-stone-50 border border-stone-100 py-3 px-4 outline-none focus:border-stone-800 transition-colors font-serif text-lg'}}) }}
+                </div>
+
+                <div>
+                    <label class="text-[10px] uppercase tracking-widest text-stone-400 mb-3 block">Votre témoignage</label>
+                    {{ form_widget(form.commentaire, {'attr': {'class': 'w-full bg-stone-50 border border-stone-100 py-3 px-4 outline-none focus:border-stone-800 transition-colors font-sans font-light text-sm min-h-[150px]'}}) }}
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-stone-900 text-white font-sans text-xs uppercase tracking-[0.2em] py-4 hover:bg-stone-800 transition-all duration-300">
+                        Enregistrer les modifications
+                    </button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="{{ path('app_profile') }}" class="text-[10px] uppercase tracking-widest text-stone-400 hover:text-stone-800 underline">
+                    Retour au profil
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
