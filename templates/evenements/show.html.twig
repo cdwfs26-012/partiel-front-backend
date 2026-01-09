@@ -1,0 +1,157 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ event.name }} - Détails{% endblock %}
+
+{% block body %}
+    {# Initialisation de la variable de participation #}
+    {% set isParticipant = false %}
+    {% if app.user %}
+        {% for participant in event.participants %}
+            {% if participant.id == app.user.id %}
+                {% set isParticipant = true %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="bg-[#fdfcf9] min-h-screen">
+
+        {# Bouton Retour #}
+        <div class="container mx-auto px-6 pt-8">
+            <a href="{{ path('app_evenements') }}" class="text-[10px] uppercase tracking-[0.2em] text-stone-400 hover:text-stone-800 transition-colors flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+                Retour à la collection
+            </a>
+        </div>
+
+        <div class="container mx-auto px-6 py-12 max-w-6xl">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+
+                {# Colonne Gauche : Infos Événement #}
+                <div class="lg:col-span-1">
+                    <div class="sticky top-12">
+                        <span class="text-stone-400 uppercase tracking-[0.3em] text-xs mb-4 block">Fiche Événement</span>
+                        <h1 class="text-4xl font-serif text-stone-900 mb-6 leading-tight">{{ event.name }}</h1>
+
+                        <div class="space-y-6 border-t border-stone-200 pt-8">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest text-stone-400 mb-2">Responsable de l'expérience</p>
+                                <p class="text-stone-800 font-sans">{{ event.responsable.email }}</p>
+                            </div>
+
+                            {# Calcul de la moyenne (uniquement sur les avis acceptés) #}
+                            {% set avisAcceptes = [] %}
+                            {% for a in event.avis %}
+                                {% if a.accept == true %}
+                                    {% set avisAcceptes = avisAcceptes|merge([a]) %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if avisAcceptes|length > 0 %}
+                                {% set total = 0 %}
+                                {% for a in avisAcceptes %}{% set total = total + a.note %}{% endfor %}
+                                {% set moyenne = (total / avisAcceptes|length)|number_format(1) %}
+
+                                <div class="pt-4">
+                                    <p class="text-[10px] uppercase tracking-widest text-stone-400 mb-2">Note Globale</p>
+                                    <div class="flex items-baseline space-x-2">
+                                        <span class="text-5xl font-serif text-stone-900">{{ moyenne }}</span>
+                                        <span class="text-lg text-stone-300 font-light">/ 5</span>
+                                    </div>
+                                    <p class="text-xs text-stone-400 italic mt-2">Basé sur {{ avisAcceptes|length }} avis validés</p>
+                                </div>
+                            {% endif %}
+
+                            <div class="pt-8">
+                                {% if app.user %}
+                                    {% if isParticipant %}
+                                        <div class="flex items-center justify-center space-x-2 py-4 border border-stone-200 bg-stone-50">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-stone-800">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span class="text-[10px] uppercase tracking-widest text-stone-800 font-medium">Vous participez à cet événement</span>
+                                        </div>
+                                    {% else %}
+                                        <a href="{{ path('app_evenements_join', {'id': event.id}) }}"
+                                           class="block w-full text-center border border-stone-800 text-stone-800 py-4 text-xs uppercase tracking-widest hover:bg-stone-800 hover:text-white transition-all duration-500">
+                                            Participer à cet événement
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="text-center">
+                                        <p class="text-[10px] uppercase tracking-widest text-stone-400 mb-4 italic">Connectez-vous pour participer</p>
+                                        <a href="{{ path('app_login') }}" class="block w-full bg-stone-900 text-white py-4 text-xs uppercase tracking-widest hover:bg-stone-800 transition-all duration-500 shadow-sm">
+                                            Se connecter
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {# Colonne Droite : Liste des Avis #}
+                <div class="lg:col-span-2">
+
+                    {# BLOC : LAISSER UN AVIS #}
+                    {% if isParticipant %}
+                        <div class="mb-16 p-8 bg-white border border-stone-100 shadow-sm">
+                            <h3 class="text-xl font-serif text-stone-800 mb-6">Partagez votre expérience</h3>
+                            <p class="text-stone-500 font-sans text-sm font-light mb-6 leading-relaxed">
+                                En tant que participant, votre avis est précieux. Conformément à notre politique d'excellence,
+                                votre témoignage sera modéré par le responsable avant publication[cite: 138, 151].
+                            </p>
+                            <a href="{{ path('app_avis_new', {'id': event.id}) }}"
+                               class="inline-block bg-stone-900 text-white px-8 py-3 text-[10px] uppercase tracking-[0.2em] hover:bg-stone-800 transition-all">
+                                Rédiger un avis
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    <h3 class="text-xl font-serif text-stone-800 mb-10 pb-4 border-b border-stone-100">Expériences Partagées</h3>
+
+                    {% if avisAcceptes is empty %}
+                        <div class="py-20 text-center bg-stone-50 border border-dashed border-stone-200 rounded-sm">
+                            <p class="font-serif italic text-stone-400 text-lg">Aucun témoignage n'a encore été validé.</p>
+                        </div>
+                    {% else %}
+                        <div class="space-y-12">
+                            {% for avi in avisAcceptes %}
+                                <div class="group">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <p class="text-sm font-medium text-stone-900">{{ avi.auteur.email }}</p>
+                                            <p class="text-[10px] uppercase text-stone-400 tracking-tighter">Séjour récent</p>
+                                        </div>
+                                        <div class="flex items-center space-x-1">
+                                            {% for i in 1..5 %}
+                                                <div class="w-1.5 h-1.5 rounded-full {{ i <= avi.note ? 'bg-stone-800' : 'bg-stone-200' }}"></div>
+                                            {% endfor %}
+                                            <span class="ml-2 font-serif text-sm text-stone-800">{{ avi.note }}/5</span>
+                                        </div>
+                                    </div>
+
+                                    <blockquote class="font-serif italic text-stone-600 text-lg leading-relaxed pl-6 border-l-2 border-stone-100 group-hover:border-stone-800 transition-colors duration-500">
+                                        "{{ avi.commentaire|striptags }}"
+                                    </blockquote>
+
+                                    {# BOUTON D'ÉDITION POUR ADMIN / EDITOR #}
+                                    {% if is_granted('ROLE_EDITOR') %}
+                                        <div class="mt-4 flex justify-end">
+                                            <a href="{{ ea_url.setController('App\\Controller\\Admin\\AvisCrudController').setAction('edit').setEntityId(avi.id).generateUrl() }}"
+                                               class="text-[9px] uppercase tracking-widest bg-stone-100 text-stone-500 px-3 py-1 hover:bg-stone-800 hover:text-white transition-colors border border-stone-200">
+                                                <i class="fa fa-edit mr-1"></i> Modérer cet avis
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

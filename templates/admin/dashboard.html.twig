@@ -1,0 +1,47 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Tableau de Bord{% endblock %}
+
+{% block main %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        {# Carte : Total Avis #}
+        <div class="bg-white p-6 border border-stone-100 shadow-sm rounded-sm">
+            <span class="text-[10px] uppercase tracking-widest text-stone-400 block mb-2">Total des Avis</span>
+            <div class="flex items-baseline space-x-2">
+                <span class="text-3xl font-serif text-stone-900">{{ stats.totalAvis }}</span>
+                <span class="text-stone-300 text-xs italic">témoignages</span>
+            </div>
+        </div>
+
+        {# Carte : Avis en attente (Crucial pour la Règle 1) #}
+        <div class="bg-white p-6 border {{ stats.avisEnAttente > 0 ? 'border-amber-200' : 'border-stone-100' }} shadow-sm rounded-sm">
+            <span class="text-[10px] uppercase tracking-widest {{ stats.avisEnAttente > 0 ? 'text-amber-600' : 'text-stone-400' }} block mb-2">À modérer (Règle 1)</span>
+            <div class="flex items-baseline space-x-2">
+                <span class="text-3xl font-serif {{ stats.avisEnAttente > 0 ? 'text-amber-700' : 'text-stone-900' }}">{{ stats.avisEnAttente }}</span>
+                <span class="text-stone-300 text-xs italic">en attente</span>
+            </div>
+        </div>
+
+        {# Carte : Événements #}
+        <div class="bg-white p-6 border border-stone-100 shadow-sm rounded-sm">
+            <span class="text-[10px] uppercase tracking-widest text-stone-400 block mb-2">Événements</span>
+            <div class="flex items-baseline space-x-2">
+                <span class="text-3xl font-serif text-stone-900">{{ stats.totalEvents }}</span>
+                <span class="text-stone-300 text-xs italic">organisés</span>
+            </div>
+        </div>
+
+        {# Carte : Utilisateurs #}
+        <div class="bg-white p-6 border border-stone-100 shadow-sm rounded-sm">
+            <span class="text-[10px] uppercase tracking-widest text-stone-400 block mb-2">Utilisateurs</span>
+            <div class="flex items-baseline space-x-2">
+                <span class="text-3xl font-serif text-stone-900">{{ stats.totalUsers }}</span>
+                <span class="text-stone-300 text-xs italic">comptes</span>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

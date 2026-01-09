@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Devenir Membre - Relais & Châteaux{% endblock %}
+
+{% block body %}
+    <div class="min-h-[80vh] flex items-center justify-center py-20 px-4 bg-[#fdfcf9]">
+        <div class="max-w-md w-full">
+
+            {# En-tête du formulaire #}
+            <div class="text-center mb-12">
+                <span class="text-stone-400 uppercase tracking-[0.3em] text-xs mb-4 block">Adhésion</span>
+                <h1 class="text-4xl font-light text-stone-800 font-serif mb-4">Créer un compte</h1>
+                <div class="w-12 h-px bg-stone-300 mx-auto mb-6"></div>
+                <p class="text-stone-500 font-sans text-sm font-light">
+                    Rejoignez notre cercle pour accéder à nos services de réservation exclusifs.
+                </p>
+            </div>
+
+            {# Affichage des erreurs globales #}
+            {% if form_errors(registrationForm) %}
+                <div class="mb-6 p-4 bg-red-50 text-red-700 text-sm font-sans border-l-2 border-red-200">
+                    {{ form_errors(registrationForm) }}
+                </div>
+            {% endif %}
+
+            {{ form_start(registrationForm, {'attr': {'class': 'space-y-8'}}) }}
+
+            {# Champ Email #}
+            <div class="relative">
+                {{ form_widget(registrationForm.email, {
+                    'attr': {
+                        'class': 'w-full bg-transparent border-b border-stone-300 py-3 outline-none focus:border-stone-800 transition-colors font-sans font-light placeholder-stone-400 text-stone-800',
+                        'placeholder': 'Votre adresse email'
+                    }
+                }) }}
+                <div class="text-red-500 text-xs mt-1 font-sans">
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+            </div>
+
+            {# Champ Mot de passe #}
+            <div class="relative">
+                {{ form_widget(registrationForm.plainPassword, {
+                    'attr': {
+                        'class': 'w-full bg-transparent border-b border-stone-300 py-3 outline-none focus:border-stone-800 transition-colors font-sans font-light placeholder-stone-400 text-stone-800',
+                        'placeholder': 'Votre mot de passe'
+                    }
+                }) }}
+                <div class="text-red-500 text-xs mt-1 font-sans">
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+            </div>
+
+            {# Case à cocher - Conditions #}
+            <div class="flex items-start space-x-3 group">
+                <div class="flex items-center h-5">
+                    {{ form_widget(registrationForm.agreeTerms, {
+                        'attr': {'class': 'w-4 h-4 border-stone-300 text-stone-800 focus:ring-stone-500 accent-stone-800'}
+                    }) }}
+                </div>
+                <div class="text-xs text-stone-500 font-sans font-light leading-tight">
+                    J'accepte les <a href="#" class="underline hover:text-stone-800">conditions générales d'utilisation</a> et la politique de confidentialité.
+                </div>
+            </div>
+
+            {# Bouton de validation #}
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-stone-900 text-white font-sans text-xs uppercase tracking-[0.2em] py-4 hover:bg-stone-800 transition-all duration-300 shadow-sm">
+                    Valider l'inscription
+                </button>
+            </div>
+
+            <div class="text-center pt-6">
+                <p class="text-stone-400 font-sans text-xs uppercase tracking-widest">
+                    Déjà membre ?
+                    <a href="{{ path('app_login') }}" class="text-stone-800 border-b border-stone-800 pb-0.5 ml-1">Se connecter</a>
+                </p>
+            </div>
+
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+{% endblock %}

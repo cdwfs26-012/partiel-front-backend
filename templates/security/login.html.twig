@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion - Relais & Châteaux{% endblock %}
+
+{% block body %}
+    <div class="min-h-[80vh] flex items-center justify-center py-20 px-4 bg-[#fdfcf9]">
+        <div class="max-w-md w-full">
+
+            {# En-tête #}
+            <div class="text-center mb-12">
+                <span class="text-stone-400 uppercase tracking-[0.3em] text-xs mb-4 block">Bienvenue</span>
+                <h1 class="text-4xl font-light text-stone-800 font-serif mb-4">Se connecter</h1>
+                <div class="w-12 h-px bg-stone-300 mx-auto mb-6"></div>
+                <p class="text-stone-500 font-sans text-sm font-light italic">
+                    Retrouvez vos expériences d'exception.
+                </p>
+            </div>
+
+            <form method="post" class="space-y-8">
+                {# Gestion des erreurs de sécurité Symfony #}
+                {% if error %}
+                    <div class="p-4 bg-red-50 text-red-700 text-xs font-sans border-l-2 border-red-200 animate-pulse">
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
+
+                {# Déjà connecté ? #}
+                {% if app.user %}
+                    <div class="p-4 bg-stone-100 text-stone-600 text-sm font-sans text-center">
+                        Vous êtes connecté en tant que <span class="font-semibold">{{ app.user.userIdentifier }}</span>.<br>
+                        <a href="{{ path('app_logout') }}" class="underline hover:text-stone-900 mt-2 inline-block">Se déconnecter</a>
+                    </div>
+                {% endif %}
+
+                {# Champ Email #}
+                <div class="relative">
+                    <label for="username" class="text-[10px] uppercase tracking-widest text-stone-400 mb-1 block">Adresse Email</label>
+                    <input type="email" value="{{ last_username }}" name="_username" id="username"
+                           class="w-full bg-transparent border-b border-stone-300 py-3 outline-none focus:border-stone-800 transition-colors font-sans font-light text-stone-800"
+                           autocomplete="email" required autofocus>
+                </div>
+
+                {# Champ Mot de passe #}
+                <div class="relative">
+                    <div class="flex justify-between items-end mb-1">
+                        <label for="password" class="text-[10px] uppercase tracking-widest text-stone-400 block">Mot de passe</label>
+                    </div>
+                    <input type="password" name="_password" id="password"
+                           class="w-full bg-transparent border-b border-stone-300 py-3 outline-none focus:border-stone-800 transition-colors font-sans font-light text-stone-800"
+                           autocomplete="current-password" required>
+                </div>
+
+                {# CSRF Token #}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                {# Remember Me (Optionnel mais stylisé) #}
+                <div class="flex items-center space-x-3">
+                    <input type="checkbox" name="_remember_me" id="_remember_me"
+                           class="w-4 h-4 border-stone-300 text-stone-800 focus:ring-stone-500 accent-stone-800">
+                    <label for="_remember_me" class="text-xs text-stone-500 font-sans font-light">Se souvenir de moi</label>
+                </div>
+
+                {# Bouton de connexion #}
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-stone-900 text-white font-sans text-xs uppercase tracking-[0.2em] py-4 hover:bg-stone-800 transition-all duration-300 shadow-sm">
+                        Se connecter
+                    </button>
+                </div>
+
+                <div class="text-center pt-6">
+                    <p class="text-stone-400 font-sans text-[11px] uppercase tracking-widest">
+                        Pas encore de compte ?
+                        <a href="{{ path('app_register') }}" class="text-stone-800 border-b border-stone-800 pb-0.5 ml-1">Créer un profil</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

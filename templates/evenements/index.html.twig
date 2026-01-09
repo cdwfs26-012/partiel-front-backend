@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Événements - Relais & Châteaux{% endblock %}
+
+{% block body %}
+    <div class="bg-[#fdfcf9] min-h-screen pb-20">
+
+        {# Header de page #}
+        <div class="py-20 bg-stone-50 border-b border-stone-100 mb-16">
+            <div class="container mx-auto px-6 text-center">
+                <span class="text-stone-400 uppercase tracking-[0.4em] text-xs mb-4 block">Agenda Exclusif</span>
+                <h1 class="text-5xl font-light text-stone-800 font-serif mb-6">Événements d'Exception</h1>
+                <div class="w-20 h-px bg-stone-300 mx-auto"></div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 max-w-7xl">
+
+            {# Barre d'outils (Recherche / Filtres) #}
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12 border-b border-stone-200 pb-6">
+                <p class="text-stone-500 font-serif italic mb-4 md:mb-0">
+                    Affichage de <span class="text-stone-900">{{ events|length }}</span> collections privées
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-[10px] uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors">Filtrer par date</a>
+                    <span class="text-stone-300">|</span>
+                    <a href="#" class="text-[10px] uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors">Trier par nom</a>
+                </div>
+            </div>
+
+            {# Grille d'événements #}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                {% for event in events %}
+                    <div class="group relative bg-white border border-stone-100 p-8 hover:shadow-2xl hover:shadow-stone-200/50 transition-all duration-500">
+
+                        {# Badge discret pour le nombre d'avis #}
+                        <div class="absolute top-4 right-6">
+                        <span class="text-[10px] font-sans text-stone-400 tracking-tighter uppercase italic">
+                            {{ event.avis|length }} avis partagé(s)
+                        </span>
+                        </div>
+
+                        <div class="mb-8">
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-stone-400 block mb-2">Événement Prestige</span>
+                            <h2 class="text-2xl font-serif text-stone-800 group-hover:text-stone-600 transition-colors mb-4">
+                                {{ event.name }}
+                            </h2>
+                            <div class="w-8 h-px bg-stone-200 group-hover:w-full transition-all duration-700"></div>
+                        </div>
+
+                        <div class="space-y-4 mb-8">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 text-xs font-serif italic border border-stone-200">
+                                    {{ event.responsable.email|slice(0,1)|upper }}
+                                </div>
+                                <div>
+                                    <p class="text-[10px] uppercase tracking-widest text-stone-400 leading-none">Responsable</p>
+                                    <p class="text-sm font-sans text-stone-700">{{ event.responsable.email }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center pt-6 border-t border-stone-50">
+                            <a href="{{ path('app_evenements_detail', {'id': event.id}) }}"
+                               class="text-[11px] uppercase tracking-widest text-stone-800 font-medium hover:pl-2 transition-all duration-300">
+                                Consulter les détails &rarr;
+                            </a>
+
+                            {# Visualisation rapide de la note moyenne (si avis existent) #}
+                            <div class="flex items-center space-x-2">
+                                {% if event.avis|length > 0 %}
+                                    {% set totalNotes = 0 %}
+                                    {% for avi in event.avis %}
+                                        {% set totalNotes = totalNotes + avi.note %}
+                                    {% endfor %}
+                                    {% set moyenne = (totalNotes / event.avis|length)|number_format(1) %}
+
+                                    <div class="flex items-baseline space-x-1">
+                                        {# Note principale plus grande et affirmée #}
+                                        <span class="text-2xl font-serif text-stone-900 leading-none">
+                {{ moyenne }}
+            </span>
+
+                                        {# Le dénominateur plus discret et légèrement surélevé #}
+                                        <span class="text-sm font-sans text-stone-400 uppercase tracking-tighter">
+                / 5
+            </span>
+                                    </div>
+                                {% else %}
+                                    <span class="text-xs uppercase tracking-[0.1em] text-stone-300 italic font-light">
+            Aucun avis
+        </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-span-full py-20 text-center border-2 border-dashed border-stone-200 rounded-lg">
+                        <p class="font-serif italic text-stone-400">Aucun événement n'est programmé pour le moment.</p>
+                    </div>
+                {% endfor %}
+            </div>
+
+            {# Pagination discrète #}
+            <div class="mt-20 flex justify-center">
+                <nav class="inline-flex space-x-4 items-center">
+                    <a href="#" class="w-10 h-10 flex items-center justify-center border border-stone-200 text-stone-400 hover:border-stone-800 hover:text-stone-800 transition-all italic">1</a>
+                    <a href="#" class="w-10 h-10 flex items-center justify-center text-stone-400 hover:text-stone-800 transition-all italic">2</a>
+                    <span class="text-stone-300">...</span>
+                </nav>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

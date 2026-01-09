@@ -1,0 +1,29 @@
+<nav class="bg-white border-b border-stone-100 font-serif">
+    <div class="container mx-auto px-6">
+        <div class="flex justify-between items-center h-20">
+
+            {# Logo / Nom #}
+            <a href="{{ path('app_home') }}" class="text-xl tracking-[0.3em] uppercase text-stone-800 hover:text-stone-500 transition-colors">
+                Relais & Châteaux
+            </a>
+
+            {# Menu Desktop #}
+            <div class="hidden md:flex items-center space-x-10 text-xs uppercase tracking-widest text-stone-600">
+                <a href="{{ path('app_home') }}" class="hover:text-stone-900 border-b border-transparent hover:border-stone-900 transition-all pb-1">Accueil</a>
+                <a href="{{ path('app_evenements') }}" class="hover:text-stone-900 border-b border-transparent hover:border-stone-900 transition-all pb-1">Nos Evenements</a>
+                <a href="#" class="hover:text-stone-900 border-b border-transparent hover:border-stone-900 transition-all pb-1">Réservations</a>
+            </div>
+
+            {# Section Utilisateur #}
+            <div class="flex items-center space-x-6 text-xs uppercase tracking-widest">
+                {% if app.user %}
+                    <span class="hidden lg:inline text-stone-400 italic normal-case font-sans">Bienvenue, {{ app.user.email }}</span>
+                    <a href="{{ path('app_logout') }}" class="text-stone-800 font-medium">Déconnexion</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="text-stone-600 hover:text-stone-900">Connexion</a>
+                    <a href="{{ path('app_register') }}" class="bg-stone-800 text-white px-5 py-2 hover:bg-stone-700 transition-colors">S'inscrire</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

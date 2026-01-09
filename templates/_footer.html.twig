@@ -1,0 +1,40 @@
+<footer class="bg-stone-900 text-stone-300 font-serif pt-16 pb-8">
+    <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+
+            {# Colonne 1 : Vision #}
+            <div>
+                <h3 class="text-white uppercase tracking-widest text-sm mb-6">L'Esprit Relais</h3>
+                <p class="font-sans font-light text-sm leading-relaxed opacity-70">
+                    Plus qu'une chaîne d'hôtels, une association de restaurateurs et d'hôteliers indépendants qui partagent la passion de leur métier.
+                </p>
+            </div>
+
+            {# Colonne 2 : Liens #}
+            <div>
+                <h3 class="text-white uppercase tracking-widest text-sm mb-6">Explorer</h3>
+                <ul class="font-sans font-light text-sm space-y-3 opacity-70">
+                    <li><a href="#" class="hover:text-white transition-colors">Mentions Légales</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Politique de Confidentialité</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Devenir Partenaire</a></li>
+                </ul>
+            </div>
+
+            {# Colonne 3 : Newsletter/Contact #}
+            <div>
+                <h3 class="text-white uppercase tracking-widest text-sm mb-6">Contact</h3>
+                <p class="font-sans font-light text-sm opacity-70">Service Client Prestige</p>
+                <p class="font-sans font-light text-sm text-stone-100 mt-1">01 45 72 90 00</p>
+            </div>
+        </div>
+
+        <div class="border-t border-stone-800 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-[0.2em] opacity-50">
+            <p>&copy; {{ 'now'|date('Y') }} Relais & Châteaux. Tous droits réservés.</p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+                <a href="#">Facebook</a>
+            </div>
+        </div>
+    </div>
+</footer>
