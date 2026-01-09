@@ -17,10 +17,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 final class EvenementsController extends AbstractController
 {
     #[Route('/evenements', name: 'app_evenements')]
-    public function index(EventRepository $eventRepository): Response
+    public function index(EventRepository $eventRepository, Request $request): Response
     {
-        // On récupère tous les événements en base de données
         $events = $eventRepository->findAll();
+        $sort = $request->query->get('sort');
+
+        if ($sort === 'note_desc' || $sort === 'note_asc') {
+            usort($events, function($a, $b) use ($sort) {
+                $avgA = count($a->getAvis()) > 0 ? array_sum(array_map(fn($n) => $n->getNote(), $a->getAvis()->toArray())) / count($a->getAvis()) : 0;
+                $avgB = count($b->getAvis()) > 0 ? array_sum(array_map(fn($n) => $n->getNote(), $b->getAvis()->toArray())) / count($b->getAvis()) : 0;
+
+                return $sort === 'note_desc' ? $avgB <=> $avgA : $avgA <=> $avgB;
+            });
+        }
 
         return $this->render('evenements/index.html.twig', [
             'events' => $events,

@@ -17,8 +17,20 @@
             {# Section Utilisateur #}
             <div class="flex items-center space-x-6 text-xs uppercase tracking-widest">
                 {% if app.user %}
-                    <span class="hidden lg:inline text-stone-400 italic normal-case font-sans">Bienvenue, {{ app.user.email }}</span>
-                    <a href="{{ path('app_logout') }}" class="text-stone-800 font-medium">Déconnexion</a>
+                    <div class="flex items-center space-x-6">
+        <span class="hidden lg:inline text-stone-400 italic normal-case font-sans">
+            Bienvenue, {{ app.user.email }}
+        </span>
+
+                        {# Icône Profil #}
+                        <a href="{{ path('app_profile') }}" class="text-stone-800 hover:text-stone-500 transition-colors duration-300" title="Mon Profil">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.963-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            </svg>
+                        </a>
+
+                        <a href="{{ path('app_logout') }}" class="text-stone-800 font-medium hover:text-stone-500 transition-colors">Déconnexion</a>
+                    </div>
                 {% else %}
                     <a href="{{ path('app_login') }}" class="text-stone-600 hover:text-stone-900">Connexion</a>
                     <a href="{{ path('app_register') }}" class="bg-stone-800 text-white px-5 py-2 hover:bg-stone-700 transition-colors">S'inscrire</a>

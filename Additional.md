@@ -97,17 +97,17 @@ Participant → Rédige un avis → Statut "En attente"
 ADMIN → /admin → Gestion utilisateurs → Sélection USER → Promotion EDITOR
 ```
 ## URLs principales
-| URL                              | Accès           | Description                                        |
-|----------------------------------|----------------|----------------------------------------------------|
-| `/`                              | Public         | Page d'accueil                                     |
-| `/login`                         | Public         | Page de connexion                                  |
-| `/register`                      | Public         | Page d'inscription                                 |
-| `/evenements`                    | Public         | Liste des événements                               |
-| `/admin`                         | Editor, Admin  | Interface d'administration                         |
-| `/evenements/detail/1`           | Public         | Détail d'un événement                              |
-| `/evenements/1/avis/nouveau`     | Authentifié    | Ajout d'un commentaire                             |
-| `/profile`                       | Authentifié    | Voir ses avis et les événements où l'on participe  |
-| `/evenements/avis/modifier/5`    | Authentifié    | Modification d'un commentaire                      |
+| URL                              | Accès           | Description                                       |
+|----------------------------------|----------------|---------------------------------------------------|
+| `/`                              | Public         | Page d'accueil                                    |
+| `/login`                         | Public         | Page de connexion                                 |
+| `/register`                      | Public         | Page d'inscription                                |
+| `/evenements`                    | Public         | Liste des événements  (filtrable)                 |
+| `/admin`                         | Editor, Admin  | Interface d'administration                        |
+| `/evenements/detail/1`           | Public         | Détail d'un événement                             |
+| `/evenements/1/avis/nouveau`     | Authentifié    | Ajout d'un commentaire                            |
+| `/profile`                       | Authentifié    | Voir ses avis et les événements où l'on participe |
+| `/evenements/avis/modifier/5`    | Authentifié    | Modification d'un commentaire                     |
 ## Fonctionnalités clés
 
 ### Système de participation
